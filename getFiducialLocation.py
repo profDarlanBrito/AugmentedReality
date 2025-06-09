@@ -3,11 +3,11 @@ from typing import Any, Sequence
 
 import cv2
 import numpy as np
-from cv2 import Mat
+from cv2 import Mat, typing
 from numpy import ndarray, dtype, generic
 
 
-def getFiducialLocation(ImageName: str) -> list:
+def getFiducialLocation(ImageName: str) -> tuple[Sequence[cv2.typing.MatLike], cv2.typing.MatLike, Sequence[cv2.typing.MatLike]]:
     # Carregar a imagem (substitua 'imagem.jpg' pelo caminho da sua imagem)
     # Você pode fazer upload da imagem ou usar um caminho de arquivo
     # Exemplo de upload:
@@ -19,7 +19,6 @@ def getFiducialLocation(ImageName: str) -> list:
     # Exemplo de leitura de um arquivo local no Colab (se a imagem já estiver lá)
     try:
         img = cv2.imread(ImageName)
-        source = cv2.imread('./images/eu.jpg')
         if img is None:
             raise FileNotFoundError("imagem.jpg not found.")
     except FileNotFoundError as e:
@@ -47,7 +46,6 @@ def getFiducialLocation(ImageName: str) -> list:
 
         # Desenhar os marcadores detectados na imagem original
         if ids is not None:
-            img = cv2.aruco.drawDetectedMarkers(img, corners, ids)
             print("AprilTags detectadas com IDs:", ids)
         else:
             print("Nenhuma AprilTag detectada.")

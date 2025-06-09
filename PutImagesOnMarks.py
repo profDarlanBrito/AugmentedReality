@@ -2,10 +2,11 @@
 import cv2
 import numpy as np
 
-def PutImagesOnMarks(ids, corners, sourceImgName, MarkImgName):
+def PutImagesOnMarks(ids, corners, sourceImgName: str, MarkImgName: str):
     img = cv2.imread(MarkImgName)
     (imgH, imgW) = img.shape[:2]
     source = cv2.imread(sourceImgName)
+    img = cv2.aruco.drawDetectedMarkers(img, corners, ids)
     ids = ids.flatten()
     refPts = []
     # loop over the IDs of the ArUco markers in top-left, top-right,
