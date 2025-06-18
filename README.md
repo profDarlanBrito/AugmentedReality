@@ -1,6 +1,6 @@
 # Augmented Reality to Work with Augmented Reality
 
-![Augmented Reality Banner/Logo - Placeholder. You can replace this with an actual image later.]
+![](G:\Meu Drive\Projetos\IC\Augmented Reality\Programs\Augmented Reality\Images\AR-Augmented-Reality.jpeg)
 *(Consider adding a compelling image or GIF here that visually represents AR or your project's goal.)*
 
 ## Table of Contents
