@@ -8,8 +8,12 @@ def calibrate_camera_from_video(video_path, chessboard_size, square_size):
 
     # prepare object points, like (0,0,0), (1,0,0), (2,0,0) ....,(6,5,0)
     # this assumes an 8x6 chessboard with each square being unit size
-    objp = np.zeros((6 * 8, 3), np.float32)
-    objp[:, :2] = np.mgrid[0:8, 0:6].T.reshape(-1, 2)
+    #objp = np.zeros((6 * 8, 3), np.float32)
+    #objp[:, :2] = np.mgrid[0:8, 0:6].T.reshape(-1, 2)
+
+    objp = np.zeros((22*15, 3), np.float32)
+    objp[:, :2] = np.mgrid[0:22, 0:15].T.reshape(-1, 2)
+
 
     # Arrays to store object points and image points from all images
     objpoints = []  # 3d point in real world space
@@ -38,11 +42,16 @@ def calibrate_camera_from_video(video_path, chessboard_size, square_size):
     objp = np.zeros((chessboard_size[0]*chessboard_size[1], 3), np.float32)
     objp[:,:2] = np.mgrid[0:chessboard_size[0], 0:chessboard_size[1]].T.reshape(-1, 2)
     objp = objp * square_size
+    
+    # -Frames/s
+    fps = cap.get(cv2.CAP_PROP_FPS)
+    max_seconds = 5
+    max_frames = int(fps * max_seconds)
 
     frame_count = 0
     while(cap.isOpened()):
         ret, frame = cap.read()
-        if not ret:
+        if not ret or frame_count >= max_frames:
             break
 
         frame_count += 1
