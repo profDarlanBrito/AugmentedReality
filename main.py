@@ -10,10 +10,10 @@ if __name__ == "__main__":
         print("Running on Linux")
     else:
         print(f"Running on unknown OS: {platform.system()}")
-    #markImageName = './Images/FiducialMarkA4DifferentIDsSmall.png'
-    #sourceImageName = './Images/eu.jpg'
-    #corners, ids, rejectedImgPoints = getFiducialLocation(markImageName)
-    #PutImagesOnMarks(ids, corners, sourceImageName, markImageName)
+    markImageName = './Images/FiducialMarkA4DifferentIDsSmall.png'
+    sourceImageName = './Images/eu.jpg'
+    corners, ids, rejectedImgPoints = getFiducialLocation(markImageName)
+    PutImagesOnMarks(ids, corners, sourceImageName, markImageName)
 
       # Parâmetros para calibração
     video_path = './videos/teste.mp4'  # ajuste o caminho para seu vídeo
