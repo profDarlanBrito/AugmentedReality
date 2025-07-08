@@ -1,6 +1,6 @@
 from PutImagesOnMarks import PutImagesOnMarks
 from getFiducialLocation import getFiducialLocation
-from CameraCalibration import calibrate_camera_from_video
+from CameraCalibration import calibrate_camera_from_images
 import platform
 
 if __name__ == "__main__":
@@ -10,17 +10,17 @@ if __name__ == "__main__":
         print("Running on Linux")
     else:
         print(f"Running on unknown OS: {platform.system()}")
-    markImageName = './Images/FiducialMarkA4DifferentIDsSmall.png'
-    sourceImageName = './Images/eu.jpg'
-    corners, ids, rejectedImgPoints = getFiducialLocation(markImageName)
-    PutImagesOnMarks(ids, corners, sourceImageName, markImageName)
 
-      # Parâmetros para calibração
-    video_path = './videos/teste.mp4'  # ajuste o caminho para seu vídeo
-    chessboard_size = (22, 15)  # tamanho do tabuleiro (número de cantos internos)
-    square_size = 1.0  # tamanho do quadrado, em mm ou unidades que você usar
+   # markImageName = './Images/FiducialMarkA4DifferentIDsSmall.png'
+    #sourceImageName = './Images/eu.jpg'
+    #corners, ids, rejectedImgPoints = getFiducialLocation(markImageName)
+    #PutImagesOnMarks(ids, corners, sourceImageName, markImageName)
 
-    resultado = calibrate_camera_from_video(video_path, chessboard_size, square_size)
+    # Parâmetros para calibração com imagens
+    chessboard_size = (8, 6)  # número de cantos internos (largura, altura)
+    square_size = 25.0  # tamanho real de cada quadrado (em mm, cm ou unidade arbitrária)
+
+    resultado = calibrate_camera_from_images(chessboard_size, square_size)  # ← chamada atualizada
 
     if resultado:
         camera_matrix, dist_coeffs, rvecs, tvecs = resultado
