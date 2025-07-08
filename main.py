@@ -11,15 +11,15 @@ if __name__ == "__main__":
     else:
         print(f"Running on unknown OS: {platform.system()}")
 
-   # markImageName = './Images/FiducialMarkA4DifferentIDsSmall.png'
-    #sourceImageName = './Images/eu.jpg'
-    #corners, ids, rejectedImgPoints = getFiducialLocation(markImageName)
-    #PutImagesOnMarks(ids, corners, sourceImageName, markImageName)
+    markImageName = './Images/FiducialMarkA4DifferentIDsSmall.png'
+    sourceImageName = './Images/eu.jpg'
+    corners, ids, rejectedImgPoints = getFiducialLocation(markImageName)
+    PutImagesOnMarks(ids, corners, sourceImageName, markImageName)
 
     # Parâmetros para calibração com imagens
     chessboard_size = (8, 6)  # número de cantos internos (largura, altura)
     square_size = 25.0  # tamanho real de cada quadrado (em mm, cm ou unidade arbitrária)
-
+    
     resultado = calibrate_camera_from_images(chessboard_size, square_size)  # ← chamada atualizada
 
     if resultado:
