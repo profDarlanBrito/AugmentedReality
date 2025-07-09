@@ -1,10 +1,12 @@
+from typing import Any
 import cv2
 import numpy as np
 import glob
 import os
 
+
 # function to calibrate the camera
-def calibrate_camera_from_images(chessboard_size, square_size):
+def calibrate_camera_from_images(Settings: dict) -> tuple[Any,Any,Any,Any]:
     """
     Calibrates the camera from a folder of chessboard images.
 
@@ -16,8 +18,10 @@ def calibrate_camera_from_images(chessboard_size, square_size):
         tuple: A tuple containing the camera matrix, distortion coefficients,
                rotation vectors, and translation vectors.
                Returns None if calibration fails.
+               :param Settings:
     """
-
+    chessboard_size = Settings["checkerboard size"]
+    square_size = Settings["square size"]
     # define the termination criteria for the calibration
     criteria = (cv2.TERM_CRITERIA_EPS + cv2.TERM_CRITERIA_MAX_ITER, 30, 0.001)
 
@@ -31,7 +35,7 @@ def calibrate_camera_from_images(chessboard_size, square_size):
     imgpoints = []  # 2d points in image plane
 
     # Substitui a leitura de vídeo pela leitura de imagens da pasta 'fotosCalibration'
-    image_folder = "fotosCalibration"  # nome da pasta onde estão as imagens
+    image_folder = Settings["calibration folder"]  # nome da pasta onde estão as imagens
     image_paths = []
     for ext in ('*.jpg', '*.jpeg', '*.png'):
         image_paths.extend(glob.glob(os.path.join(image_folder, ext)))
