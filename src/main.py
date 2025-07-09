@@ -1,6 +1,6 @@
 from PutImagesOnMarks import PutImagesOnMarks
-from getFiducialLocation import getFiducialLocation
-from CameraCalibration import calibrate_camera_from_images
+from src.getFiducialLocation import getFiducialLocation
+from src.CameraCalibration import calibrate_camera_from_images
 import platform
 
 if __name__ == "__main__":
