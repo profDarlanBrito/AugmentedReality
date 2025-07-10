@@ -9,7 +9,7 @@ class Settings:
     @classmethod
     def get(self):
         if self._instance is None:
-            self._instance = parse_settings_file("../config.yaml")
+            self._instance = parse_settings_file("config.yaml")
         return self._instance
 
 
@@ -32,5 +32,5 @@ def parse_settings_file(filename):
 
 
 if __name__ == "__main__":
-    sett = parse_settings_file("../config.yaml")
+    sett = parse_settings_file("config.yaml")
     print(sett["checkerboard size"])

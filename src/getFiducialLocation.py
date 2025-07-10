@@ -8,14 +8,11 @@ from numpy import ndarray, dtype, generic
 
 
 def getFiducialLocation(ImageName: str) -> tuple[Sequence[cv2.typing.MatLike], cv2.typing.MatLike, Sequence[cv2.typing.MatLike]]:
-    # Carregar a imagem (substitua 'imagem.jpg' pelo caminho da sua imagem)
-    # Você pode fazer upload da imagem ou usar um caminho de arquivo
-    # Exemplo de upload:
-    # from google.colab import files
-    # uploaded = files.upload()
-    # for filename in uploaded.keys():
-    #   img = cv2.imread(filename)
-
+    """
+    Function to get fiducial mark location
+    :param ImageName: String with image name (ex <name>.<extension>
+    :return: tuple[ Mat:opencv, Mat:opencv, Mat:opencv]
+    """
     # Exemplo de leitura de um arquivo local no Colab (se a imagem já estiver lá)
     try:
         img = cv2.imread(ImageName)

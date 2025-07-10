@@ -11,3 +11,15 @@ do calibration: 1
 do fiducial mark: 0
 # Calibration image folder
 calibration folder: fotosCalibration
+# Image with fiducial mark
+name fiducial image: FiducialMarkA4DifferentIDsSmall.png
+# Directory of the fiducial image
+directory fiducial image: Images
+# Source images to put a 3D object
+name 3d image: eu.jpg
+# Directory for source image
+directory 3d image: Images
+# Data file name
+data file name: calibration_data.yaml
+# Directory for a data file
+directory data file: Data
