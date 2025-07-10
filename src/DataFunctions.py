@@ -74,7 +74,7 @@ def save_multiple_numpy_to_yaml(numpy_arrays_dict: dict, filename:str="data.yaml
     except Exception as e:
         print(f"Ocorreu um erro ao salvar os arrays NumPy: {e}")
 
-def load_multiple_numpy_from_yaml(filename="data.yaml"):
+def load_multiple_numpy_from_yaml(filename:str="data.yaml"):
     """
     Carrega múltiplos arrays NumPy de um arquivo YAML.
 
