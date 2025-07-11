@@ -23,7 +23,7 @@ def PutImagesOnMarks(ids, corners, sourceImgName: str, MarkImgName: str):
     # are specified in top-left, top-right, bottom-right, and bottom-left
     # order
     (refPtTL, refPtTR, refPtBR, refPtBL) = refPts
-    dstMat = [refPtTL[0], refPtTR[1], refPtBR[2], refPtBL[3]]
+    dstMat = [refPtTL[2], refPtTR[3], refPtBR[0], refPtBL[1]]
     dstMat = np.array(dstMat)
     # grab the spatial dimensions of the source image and define the
     # transform matrix for the *source* image in top-left, top-right,
