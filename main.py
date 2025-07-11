@@ -1,5 +1,6 @@
 import os.path
 
+from src.GeometricFunctions import draw_3d_axis_on_chessboard
 from src.PutImagesOnMarks import PutImagesOnMarks
 from src.getFiducialLocation import getFiducialLocation
 from src.CameraCalibration import calibrate_camera_from_images
@@ -34,3 +35,6 @@ if __name__ == "__main__":
             print("Calibração realizada com sucesso!")
         else:
             print("Calibração não foi bem sucedida.")
+    if Settings["put 3D frame"]:
+        image_location_name = os.path.join("fotosCalibration","teste1.jpeg")
+        draw_3d_axis_on_chessboard(image_location_name, Settings)

@@ -15,10 +15,7 @@ def draw_3d_axis_on_chessboard(image_path, Settings: dict):
 
     Args:
         image_path (str): Caminho para a imagem do tabuleiro de xadrez.
-        pattern_size (tuple): Número de cantos internos (largura, altura) do tabuleiro.
-                              Ex: (7, 7) para um tabuleiro 8x8.
-        square_size (float): Tamanho de um quadrado do tabuleiro em alguma unidade (e.g., cm, mm).
-                             Isso define a escala do sistema de coordenadas 3D.
+        Settings (dict): Dictionary with configurations and stores the pattern_size and square_size
     """
     # 1. Carregar a imagem
     img = cv2.imread(image_path)
@@ -49,23 +46,23 @@ def draw_3d_axis_on_chessboard(image_path, Settings: dict):
         # Estes são valores de exemplo para demonstração.
         h, w = gray.shape
         # Matriz da Câmera (K)
-        camera_matrix = np.array([
-            [w * 0.8, 0, w / 2],  # fx, 0, cx
-            [0, h * 0.8, h / 2],  # 0, fy, cy
-            [0, 0, 1]             # 0, 0, 1
-        ], dtype=np.float32)
+        # camera_matrix = np.array([
+        #     [w * 0.8, 0, w / 2],  # fx, 0, cx
+        #     [0, h * 0.8, h / 2],  # 0, fy, cy
+        #     [0, 0, 1]             # 0, 0, 1
+        # ], dtype=np.float32)
         # Coeficientes de Distorção (D)
         dist_coeffs = np.zeros((5, 1), dtype=np.float32) # Assumindo sem distorção significativa para o exemplo
         filename = os.path.join(Settings["directory data file"], Settings["data file name"])
-        listArrays = src.DataFunctions.load_multiple_numpy_from_yaml(filename)
+        CalibrationData = src.DataFunctions.load_multiple_numpy_from_yaml(filename)
         # converter o listarrays para cada matrix
-        print("Matriz da Câmera de Exemplo:\n", camera_matrix)
+        print("Matriz da Câmera de Exemplo:\n", CalibrationData["camera_matrix"])
         print("Coeficientes de Distorção de Exemplo:\n", dist_coeffs)
 
-        # 5. Calcular a pose da câmera (rvec e tvec) usando solvePnP
+        # 5. Calcular a posição da câmera (rvec e tvec) usando solvePnP
         # solvePnP encontra a rotação (rvec) e translação (tvec) do sistema
         # de coordenadas do mundo para o sistema de coordenadas da câmera.
-        ret, rvec, tvec = cv2.solvePnP(objp, corners2, camera_matrix, dist_coeffs)
+        ret, rvec, tvec = cv2.solvePnP(objp, corners2, CalibrationData["camera_matrix"], dist_coeffs)
 
         # 6. Definir os pontos do eixo 3D para projeção
         # Os eixos X, Y e Z se estenderão a partir do primeiro canto do tabuleiro (origem).
@@ -76,7 +73,7 @@ def draw_3d_axis_on_chessboard(image_path, Settings: dict):
         # 7. Projetar os pontos do eixo 3D na imagem 2D
         # projectPoints transforma os pontos 3D (da origem e ao longo dos eixos)
         # em coordenadas 2D na imagem, usando a pose calculada.
-        imgpts, jac = cv2.projectPoints(axis_points, rvec, tvec, camera_matrix, dist_coeffs)
+        imgpts, jac = cv2.projectPoints(axis_points, rvec, tvec, CalibrationData["camera_matrix"], dist_coeffs)
 
         # 8. Desenhar os eixos projetados na imagem
         # A origem é o primeiro canto do tabuleiro (index 0 de imgpts).
