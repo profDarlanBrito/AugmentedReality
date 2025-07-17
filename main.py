@@ -7,6 +7,7 @@ from src.CameraCalibration import calibrate_camera_from_images
 import src.DataFunctions
 import platform
 from src.Config import parse_settings_file
+import src.Model3DOperations
 
 if __name__ == "__main__":
     Settings = parse_settings_file("config.yaml")
@@ -37,4 +38,7 @@ if __name__ == "__main__":
             print("Calibração não foi bem sucedida.")
     if Settings["put 3D frame"]:
         image_location_name = os.path.join("fotosCalibration","teste1.jpeg")
-        draw_3d_axis_on_chessboard(image_location_name, Settings)
+        #draw_3d_axis_on_chessboard(image_location_name, Settings)
+        file_directory_name = os.path.join("Models3D","Cubo1.obj")
+        model_vertices, model_faces = src.Model3DOperations.load_blender_model(file_directory_name)
+        src.Model3DOperations.draw_model(model_vertices, model_faces)

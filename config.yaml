@@ -8,9 +8,9 @@ square size: 1
 # Flag to do calibration
 do calibration: 0
 # Flag to fiducial mark
-do fiducial mark: 1
+do fiducial mark: 0
 # Flag to put 3D frame
-put 3D frame: 0
+put 3D frame: 1
 # Calibration image folder
 calibration folder: fotosCalibration
 # Image with fiducial mark
