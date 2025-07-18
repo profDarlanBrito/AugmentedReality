@@ -43,7 +43,8 @@ def display():
             glMaterialfv(GL_FRONT_AND_BACK, GL_AMBIENT, material.ambient)
             glMaterialfv(GL_FRONT_AND_BACK, GL_DIFFUSE, material.diffuse)
             glMaterialfv(GL_FRONT_AND_BACK, GL_SPECULAR, material.specular)
-            glMaterialfv(GL_FRONT_AND_BACK, GL_SHININESS, material.shininess)
+            shininess = material.shininess/255*128
+            glMaterialfv(GL_FRONT_AND_BACK, GL_SHININESS, shininess)
 
             glPushMatrix()
             # Ajuste a escala e a translação do modelo conforme necessário
@@ -91,7 +92,7 @@ def keyboard_input(key, x, y):
 
 if __name__ == "__main__":
     # --- Configuração do Modelo ---
-    model_path = os.path.join("../Models3D","Cubo4.obj")  # <--- Altere para o caminho do seu modelo .obj
+    model_path = os.path.join("../Models3D","Plane.obj")  # <--- Altere para o caminho do seu modelo .obj
     load_model(model_path)
 
     if model is None:
