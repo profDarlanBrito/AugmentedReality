@@ -1,16 +1,9 @@
-import cv2
+import pyglet
+from OpenGL.GL import *
+from OpenGL.GLU import *
 import numpy as np
-import OpenGL.GL as gl
-import OpenGL.GLUT as glut
-import OpenGL.GLU as glu
-from mypyc.crash import catch_errors
 
-
-def load_blender_model(filePathName:str):
-    """
-    Simple OBJ loader - you'd need a more robust one for complex models.
-    This is just to demonstrate loading vertices and faces.
-    """
+def load_blender_model(filePathName: str):
     vertices = []
     faces = []
     try:
@@ -19,28 +12,51 @@ def load_blender_model(filePathName:str):
                 if line.startswith('v '):
                     vertices.append(list(map(float, line.split()[1:4])))
                 elif line.startswith('f '):
-                    # OBJ faces can be 1-indexed, handle accordingly
                     faces.append([int(v.split('/')[0]) - 1 for v in line.split()[1:]])
         model_vertices = np.array(vertices, dtype=np.float32)
-        model_faces = np.array(faces, dtype=np.int32)
-        print(f"Loaded model with {len(model_vertices)} vertices and {len(model_faces)} faces.")
+        print(f"Loaded model with {len(model_vertices)} vertices and {len(faces)} faces.")
     except FileNotFoundError:
         print(f"Error: Model file not found at {filePathName}")
         exit()
-    return model_vertices, model_faces
+    return model_vertices, faces
+
 def draw_model(model_vertices, model_faces):
-    """
-    Draws the loaded 3D model using OpenGL.
-    Assumes model_vertices and model_faces are populated.
-    """
-    if not model_vertices.size > 0 and not model_faces > 0:
-        return
-    try:
-        gl.glBegin(gl.GL_QUADS)
-    except:
-        print("Error")
-    gl.glColor3f(1.0, 0.5, 0.0) # Orange color for the model
+    glColor3f(1.0, 0.5, 0.0)  # cor laranja
     for face in model_faces:
+        glBegin(GL_POLYGON)
         for vertex_idx in face:
-            gl.glVertex3fv(model_vertices[vertex_idx])
-    gl.glEnd()
+            glVertex3fv(model_vertices[vertex_idx])
+        glEnd()
+
+def setup_projection(width, height): #FUNÇÃO COM ERRO RESIDUAL
+    glMatrixMode(GL_PROJECTION)
+    glLoadIdentity()
+    gluPerspective(45.0, width / float(height), 0.1, 100.0)
+    glMatrixMode(GL_MODELVIEW)
+    glLoadIdentity()
+
+def run_pyglet_window(model_vertices, model_faces):
+    window = pyglet.window.Window(800, 600, "3D Model Viewer", resizable=True)
+
+    # Habilita teste de profundidade
+    glEnable(GL_DEPTH_TEST)
+
+    # Inicializa projeção
+    setup_projection(window.width, window.height)
+
+    @window.event
+    def on_resize(width, height):
+        glViewport(0, 0, width, height)
+        setup_projection(width, height)
+
+    @window.event
+    def on_draw():
+        glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT)
+        glLoadIdentity()
+        # Move e rotaciona a câmera
+        glTranslatef(0.0, 0.0, -5.0)
+        glRotatef(30, 1, 0, 0)
+        glRotatef(30, 0, 1, 0)
+        draw_model(model_vertices, model_faces)
+
+    pyglet.app.run()

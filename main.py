@@ -1,44 +1,51 @@
-import os.path
+import os
+import platform
 
 from src.GeometricFunctions import draw_3d_axis_on_chessboard
 from src.PutImagesOnMarks import PutImagesOnMarks
 from src.getFiducialLocation import getFiducialLocation
 from src.CameraCalibration import calibrate_camera_from_images
-import src.DataFunctions
-import platform
 from src.Config import parse_settings_file
 import src.Model3DOperations
 
 if __name__ == "__main__":
+    # Carrega configurações do arquivo
     Settings = parse_settings_file("config.yaml")
-    if platform.system() == "Windows":
-        print("Running on Windows")
-    elif platform.system() == "Linux":
-        print("Running on Linux")
-    else:
-        print(f"Running on unknown OS: {platform.system()}")
-    if Settings["do fiducial mark"]:
-        markImageName = os.path.join(Settings["directory fiducial image"], Settings["name fiducial image"])
-        sourceImageName = os.path.join(Settings["directory 3d image"], Settings["name 3d image"])
-        corners, ids, rejectedImgPoints = getFiducialLocation(markImageName)
-        PutImagesOnMarks(ids, corners, sourceImageName, markImageName)
 
-    if Settings["do calibration"]:
-        resultado = calibrate_camera_from_images(Settings)  # ← chamada atualizada
+    print(f"Running on {platform.system()}")
 
+    # --- Etapa 1: Marcação Fiducial ---
+    if Settings.get("do fiducial mark"):
+        mark_image_name = os.path.join(Settings["directory fiducial image"], Settings["name fiducial image"])
+        source_image_name = os.path.join(Settings["directory 3d image"], Settings["name 3d image"])
+        corners, ids, rejected_img_points = getFiducialLocation(mark_image_name)
+        PutImagesOnMarks(ids, corners, source_image_name, mark_image_name)
+
+    # --- Etapa 2: Calibração da câmera ---
+    if Settings.get("do calibration"):
+        resultado = calibrate_camera_from_images(Settings)
         if resultado:
             camera_matrix, dist_coeffs, rvecs, tvecs = resultado
-            rvecsnp = src.SaveData.concatenate_numpy_arrays_from_tuple(rvecs,1)
-            tvecsnp = src.SaveData.concatenate_numpy_arrays_from_tuple(tvecs,1)
-            calibration_data = {"camera_matrix":camera_matrix, "dist_coeffs": dist_coeffs, "rvecs": rvecsnp, "tvecs": tvecsnp}
+            rvecs_np = src.SaveData.concatenate_numpy_arrays_from_tuple(rvecs, axis=1)
+            tvecs_np = src.SaveData.concatenate_numpy_arrays_from_tuple(tvecs, axis=1)
+
+            calibration_data = {
+                "camera_matrix": camera_matrix,
+                "dist_coeffs": dist_coeffs,
+                "rvecs": rvecs_np,
+                "tvecs": tvecs_np
+            }
+
             file_directory_name = os.path.join(Settings["directory data file"], Settings["data file name"])
-            src.SaveData.save_multiple_numpy_to_yaml(calibration_data,file_directory_name)
+            src.SaveData.save_multiple_numpy_to_yaml(calibration_data, file_directory_name)
             print("Calibração realizada com sucesso!")
         else:
-            print("Calibração não foi bem sucedida.")
-    if Settings["put 3D frame"]:
-        image_location_name = os.path.join("fotosCalibration","teste1.jpeg")
-        #draw_3d_axis_on_chessboard(image_location_name, Settings)
-        file_directory_name = os.path.join("Models3D","Cubo1.obj")
+            print("Calibração não foi bem-sucedida.")
+
+    # --- Etapa 3: Exibir modelo 3D ---
+    if Settings.get("put 3D frame"):
+        file_directory_name = os.path.join("Models3D", "Cubo1.obj")  # Ajuste para outro modelo, se necessário
         model_vertices, model_faces = src.Model3DOperations.load_blender_model(file_directory_name)
-        src.Model3DOperations.draw_model(model_vertices, model_faces)
+
+        # Nova função com pyglet
+        src.Model3DOperations.run_pyglet_window(model_vertices, model_faces)
