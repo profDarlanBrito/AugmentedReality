@@ -92,7 +92,7 @@ def keyboard_input(key, x, y):
 
 if __name__ == "__main__":
     # --- Configuração do Modelo ---
-    model_path = os.path.join("../Models3D","Plane.obj")  # <--- Altere para o caminho do seu modelo .obj
+    model_path = os.path.join("../Models3D","Cubo5.obj")  # <--- Altere para o caminho do seu modelo .obj
     load_model(model_path)
 
     if model is None:
