@@ -77,7 +77,8 @@ def init():
 
     vsId = gls.compileShader(vsSource, GL_VERTEX_SHADER)
     fsId = gls.compileShader(fsSource, GL_FRAGMENT_SHADER)
-    shaderId = gls.compileProgram((vsId, fsId))
+    shaderId = gls.compileProgram(vsId, fsId)
+
 def render():
     glClear(GL_COLOR_BUFFER_BIT)
     glUseProgram(shaderId)
