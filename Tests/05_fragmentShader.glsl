@@ -1,7 +1,8 @@
 #version 330 core
 
+in vec3 fColor;
 out vec4 fragColor;
+
 void main(){
-    float value = gl_FragCoord.y / 500.0;
-    fragColor = vec4(value,0.0,0.0,1.0);
+    fragColor = vec4(fColor,1.0);
 }

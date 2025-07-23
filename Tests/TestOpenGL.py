@@ -11,15 +11,15 @@ vertices_triangulo = [
 ]
 
 vertices = [
-    [-0.8, -0.8],
-    [0.0, -0.8],
-    [-0.4, 0.0],
-    [0.0, -0.8],
-    [0.8, -0.8],
-    [0.4, 0.0],
-    [-0.4, 0.0],
-    [0.4, 0.0],
-    [0.0, 0.8]
+    [-0.8, -0.8, 1,0,0],
+    [0.0, -0.8, 1,0,0],
+    [-0.4, 0.0, 1,0,0],
+    [0.0, -0.8, 0,1,0],
+    [0.8, -0.8, 0,1,0],
+    [0.4, 0.0, 0,1,0],
+    [-0.4, 0.0, 0,0,1],
+    [0.4, 0.0, 0,0,1],
+    [0.0, 0.8, 0,0,1]
 ]
 
 cores = [
@@ -61,9 +61,16 @@ def init():
                           2,          # size (2 components for 2D position)
                           GL_FLOAT,   # type of components
                           GL_FALSE,   # normalized?
-                          2 * 4,      # stride (2 floats * 4 bytes/float)
+                          len(vertices[0]) * vertices_np.itemsize,      # stride (2 floats * 4 bytes/float)
                           ctypes.c_void_p(0)) # offset
+    glVertexAttribPointer(1,
+                          2,          # size (2 components for 2D position)
+                          GL_FLOAT,   # type of components
+                          GL_FALSE,   # normalized?
+                          len(vertices[0]) * vertices_np.itemsize,      # stride (2 floats * 4 bytes/float)
+                          ctypes.c_void_p(2*vertices_np.itemsize)) # offset
     glEnableVertexAttribArray(0)
+    glEnableVertexAttribArray(1)
 
     # 5. Unbind VBO and VAO
     # It's good practice to unbind to avoid accidental modifications.
