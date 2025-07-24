@@ -2,6 +2,7 @@ from OpenGL.GL import *
 from OpenGL.GLUT import *
 from OpenGL.GLU import *
 import pywavefront
+from pywavefront import visualization
 
 # Variáveis globais
 model = None
