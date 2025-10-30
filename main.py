@@ -6,6 +6,9 @@ from src.PutImagesOnMarks import PutImagesOnMarks
 from src.getFiducialLocation import getFiducialLocation
 from src.CameraCalibration import calibrate_camera_from_images
 from src.Config import parse_settings_file
+
+from src import Model3DOperations_bck
+
 import src.Model3DOperations
 
 if __name__ == "__main__":
@@ -45,7 +48,7 @@ if __name__ == "__main__":
     # --- Etapa 3: Exibir modelo 3D ---
     if Settings.get("put 3D frame"):
         file_directory_name = os.path.join("Models3D", "Cubo1.obj")  # Ajuste para outro modelo, se necessário
-        model_vertices, model_faces = src.Model3DOperations.load_blender_model(file_directory_name)
+        model_vertices, model_faces = Model3DOperations_bck.load_blender_model(file_directory_name)
 
         # Nova função com pyglet
-        src.Model3DOperations.run_pyglet_window(model_vertices, model_faces)
+        Model3DOperations_bck.run_pyglet_window(model_vertices, model_faces)

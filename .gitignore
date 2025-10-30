@@ -5,3 +5,7 @@ env/
 # Arquivos de ambiente e segredos
 .env
 *.env
+
+# cache
+__pycache__/
+*.pyc
